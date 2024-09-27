@@ -13,7 +13,7 @@ const baseColors = [
   "pink",
 ];
 
-const shadeMap = {
+const shadeMapping = {
   "50": "900",
   "100": "800",
   "200": "700",
@@ -28,22 +28,33 @@ const shadeMap = {
 
 const generateThemeObject = (colors: any, mapping: any, invert = false) => {
   const theme: any = {};
-
   baseColors.forEach((color) => {
     theme[color] = {};
-    // Using Object.entries to get the keys and values as [key1, value1], [key2, value2],.... In the forEach, we are destructuring the key and value directly and then we are checking ig the invert parameter is true or false. If it is true we will return the value i.e., the second parameter of array [key,value]. If it is false we will return the key i.e., the first parameter of array [key,value].
     Object.entries(mapping).forEach(([key, value]: any) => {
       const shadeKey = invert ? value : key;
-      theme[color][key] = colors[shadeKey];
+      theme[color][key] = colors[color][shadeKey];
     });
   });
   return theme;
 };
 
-const lightTheme = generateThemeObject(colors, shadeMap);
-const darkTheme = generateThemeObject(colors, shadeMap, true);
+const lightTheme = generateThemeObject(colors, shadeMapping);
+const darkTheme = generateThemeObject(colors, shadeMapping, true);
+
+const themes = {
+  light: {
+    ...lightTheme,
+    white: "#ffffff",
+  },
+  dark: {
+    ...darkTheme,
+    white: colors.gray["950"],
+    black: colors.gray["50"],
+  },
+};
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -51,12 +62,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
   },
-  plugins: [],
+  plugins: [createThemes(themes)],
 };
+
 export default config;
