@@ -8,6 +8,13 @@ export interface Product {
   stockQuantity: number;
 }
 
+export interface newProduct {
+  name: string;
+  price: number;
+  rating?: number;
+  stockQuantity: number;
+}
+
 export interface SalesSummary {
   salesSummaryId: string;
   totalValue: number;
@@ -45,14 +52,36 @@ export interface DashboardMetrics {
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL }),
   reducerPath: "api",
-  tagTypes: ["DashboardMetrics"],
+  tagTypes: ["DashboardMetrics", "Products"],
   endpoints: (build) => ({
     getDashboardMetrics: build.query<DashboardMetrics, void>({
       query: () => "/dashboard",
       // The response will be save in the store as "DashboardMetrics"
       providesTags: ["DashboardMetrics"],
     }),
+    // Product[]: specifies the type of the data returned by the query. In this case, its and aaray of type Product.
+    //  string | void: refers to the arguemnt type that the query accepts. This indicates tat it can either be void or a string.
+    getProducts: build.query<Product[], string | void>({
+      query: (search) => ({
+        url: "/products",
+        params: search ? { search } : {},
+      }),
+      providesTags: ["Products"],
+    }),
+
+    createProduct: build.mutation<Product, newProduct>({
+      query: (newProduct) => ({
+        url: "/products",
+        method: "POST",
+        body: newProduct,
+      }),
+      invalidatesTags: ["Products"],
+    }),
   }),
 });
 
-export const { useGetDashboardMetricsQuery } = api;
+export const {
+  useGetDashboardMetricsQuery,
+  useGetProductsQuery,
+  useCreateProductMutation,
+} = api;
