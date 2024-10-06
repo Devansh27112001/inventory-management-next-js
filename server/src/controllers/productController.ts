@@ -9,5 +9,45 @@ export const getProducts = async (
   response: Response
 ): Promise<void> => {
   try {
-  } catch (error) {}
+    const search = request.query.search?.toString();
+    // If the search is an empty string, the below query will return all the products, otherwise it will return the products which contains the search string.
+    const products = await prisma.products.findMany({
+      where: {
+        name: {
+          contains: search,
+        },
+      },
+    });
+
+    response.status(200).json(products);
+  } catch (error) {
+    response
+      .status(500)
+      .json({ status: "failed", message: "Error retrieving products" });
+  }
+};
+
+export const createProduct = async (
+  request: Request,
+  response: Response
+): Promise<void> => {
+  try {
+    const { productId, name, price, rating, stockQuantity } = request.body;
+    const product = await prisma.products.create({
+      data: {
+        productId,
+        name,
+        price,
+        rating,
+        stockQuantity,
+      },
+    });
+
+    response.status(201).json(product);
+  } catch (error) {
+    response.status(500).json({
+      status: "failed",
+      message: "Error creating the product",
+    });
+  }
 };
