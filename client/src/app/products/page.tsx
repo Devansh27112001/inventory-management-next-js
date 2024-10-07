@@ -1,8 +1,18 @@
 "use client";
-import { useGetProductsQuery } from "@/state/api";
+import { useCreateProductMutation, useGetProductsQuery } from "@/state/api";
 import { PlusCircleIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import Header from "@/app/(components)/Header";
+import Ratings from "../(components)/Ratings";
+import CreateProductModal from "./CreateProductModal";
+
+type ProductFormData = {
+  name: string;
+  price: number;
+  stockQuantity: number;
+  rating: number;
+};
+
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -13,6 +23,10 @@ const Products = () => {
     isError,
   } = useGetProductsQuery(searchTerm);
 
+  const [createProduct] = useCreateProductMutation();
+  const handleCreateProduct = async (productData: ProductFormData) => {
+    await createProduct(productData);
+  };
   if (isLoading) {
     return <div className="py-4">Loading...</div>;
   }
@@ -49,6 +63,42 @@ const Products = () => {
           Create Product
         </button>
       </div>
+
+      {/* BODY PRODUCTS LIST */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 justify-between">
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          products?.map((product) => (
+            <div
+              key={product.productId}
+              className="border shadow rounded-md p-4 max-w-full w-full mx-auto"
+            >
+              <div className="felx flex-col items-center">
+                img
+                <h3 className="text-lg text-gray-900 font-semibold">
+                  {product.name}
+                </h3>
+                <p className="text-gray-800">${product.price.toFixed(2)}</p>
+                <div className="text-sm text-gray-600 mt-1">
+                  Stock: {product.stockQuantity}
+                </div>
+                {product.rating && (
+                  <div className="flex items-center mt-2">
+                    <Ratings ratings={product.rating} />
+                  </div>
+                )}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+      {/* MODAL */}
+      <CreateProductModal
+        isOpen={isModelOpen}
+        onClose={() => setIsModelOpen(false)}
+        onCreate={handleCreateProduct}
+      />
     </div>
   );
 };
