@@ -35,6 +35,7 @@ const CreateProductModal = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    // If name is price or stockQuantity or rating, convert value to number otherwise set it to value
     setFormData({
       ...formData,
       [name]:
@@ -66,6 +67,63 @@ const CreateProductModal = ({
             className={inputCssStyles}
             required
           />
+
+          {/* PRODUCT PRICE */}
+          <label htmlFor="productPrice" className={labelCssStyles}>
+            Price
+          </label>
+          <input
+            type="number"
+            name="price"
+            placeholder="Price"
+            onChange={handleChange}
+            value={formData.price}
+            className={inputCssStyles}
+            required
+          />
+
+          {/* STOCK QUANTITY */}
+          <label htmlFor="stockQuantity" className={labelCssStyles}>
+            Stock Quantity
+          </label>
+          <input
+            type="number"
+            name="stockQuantity"
+            placeholder="Stock Quantity"
+            value={formData.stockQuantity}
+            onChange={handleChange}
+            className={inputCssStyles}
+            required
+          />
+
+          {/* RATING */}
+          <label htmlFor="rating" className={labelCssStyles}>
+            Rating
+          </label>
+          <input
+            type="number"
+            name="rating"
+            placeholder="Rating"
+            value={formData.rating}
+            onChange={handleChange}
+            className={inputCssStyles}
+            required
+          />
+
+          {/* CREATE ACTIONS */}
+          <button
+            type="submit"
+            className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+          >
+            Create
+          </button>
+          <button
+            onClick={onClose}
+            type="button"
+            className="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-700"
+          >
+            Cancel
+          </button>
         </form>
       </div>
     </div>
