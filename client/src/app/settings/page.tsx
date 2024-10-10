@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import Header from "@/app/(components)/Header";
-import { Label } from "recharts";
 
 type userSettings = {
   label: string;
