@@ -2,6 +2,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/redux";
 import { setIsDarkMode, setIsSidebarCollapsed } from "@/state";
 import { BellIcon, Menu, Moon, Settings, Sun, Search } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const Navbar = () => {
@@ -59,7 +60,13 @@ const Navbar = () => {
           </div>
           <hr className="w-0 h-7 border border-solid border-l border-gray-300 mx-3" />
           <div className="flex items-center gap-3 cursor-pointer">
-            <div className="w-9 h-9">image</div>
+            <Image
+              src="https://s3-inventorymanagement-nextjs.s3.ca-central-1.amazonaws.com/profile-devansh.jpg"
+              width={50}
+              height={50}
+              className="rounded-full h-full object-cover"
+              alt="Profile Image"
+            />
             <span className="font-semibold">Devansh Kansara</span>
           </div>
         </div>

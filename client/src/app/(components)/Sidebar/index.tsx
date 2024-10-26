@@ -11,6 +11,7 @@ import {
   User,
 } from "lucide-react";
 import SidebarLink from "../SidebarLink";
+import Image from "next/image";
 
 const Sidebar = () => {
   const dispatch = useAppDispatch();
@@ -33,7 +34,13 @@ const Sidebar = () => {
           isSidebarCollapsed ? "px-5" : "px-8"
         }`}
       >
-        <div>Logo</div>
+        <Image
+          src="https://s3-inventorymanagement-nextjs.s3.ca-central-1.amazonaws.com/logo.png"
+          width={27}
+          height={27}
+          className="rounded-full w-8"
+          alt="Edstock Logo"
+        />
         <h1
           className={`${
             isSidebarCollapsed ? "hidden" : "block"
