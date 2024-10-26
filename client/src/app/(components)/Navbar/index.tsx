@@ -59,13 +59,13 @@ const Navbar = () => {
             </span>
           </div>
           <hr className="w-0 h-7 border border-solid border-l border-gray-300 mx-3" />
-          <div className="flex items-center gap-3 cursor-pointer">
+          <div className="relative flex items-center gap-3 cursor-pointer">
             <Image
               src="https://s3-inventorymanagement-nextjs.s3.ca-central-1.amazonaws.com/profile-devansh.jpg"
-              width={50}
-              height={50}
-              className="rounded-full h-full object-cover"
+              className="object-center w-15 h-15 rounded-full"
               alt="Profile Image"
+              width={30}
+              height={10}
             />
             <span className="font-semibold">Devansh Kansara</span>
           </div>
